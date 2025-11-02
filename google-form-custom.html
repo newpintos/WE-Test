@@ -195,7 +195,7 @@
                 Thank you for your submission!
             </div>
 
-            <form id="customForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdN3f0fb5AREOuKw0kvFb-Jf9vxa0YpqCYcEcyj0Jj6I8w06w/formResponse" method="POST" target="hidden_iframe">
+            <form id="customForm" method="POST" target="hidden_iframe" onsubmit="return false;">
 
                 <!-- RSVP Field -->
                 <div class="form-group">
@@ -249,10 +249,57 @@
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { showSuccess(); }"></iframe>
 
     <script>
-        let submitted = false;
+        const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdN3f0fb5AREOuKw0kvFb-Jf9vxa0YpqCYcEcyj0Jj6I8w06w/formResponse';
 
         document.getElementById('customForm').addEventListener('submit', function(e) {
-            submitted = true;
+            e.preventDefault();
+
+            // Validate form
+            if (!this.checkValidity()) {
+                this.reportValidity();
+                return false;
+            }
+
+            // Get form data
+            const formData = new FormData(this);
+            const params = new URLSearchParams();
+
+            for (let [key, value] of formData.entries()) {
+                params.append(key, value);
+            }
+
+            // Submit via hidden iframe to avoid CORS and redirect
+            const iframe = document.getElementById('hidden_iframe');
+            iframe.onload = function() {
+                showSuccess();
+            };
+
+            // Create a temporary form and submit it to the iframe
+            const tempForm = document.createElement('form');
+            tempForm.action = formUrl;
+            tempForm.method = 'POST';
+            tempForm.target = 'hidden_iframe';
+            tempForm.style.display = 'none';
+
+            // Add all form fields
+            for (let [key, value] of formData.entries()) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                tempForm.appendChild(input);
+            }
+
+            document.body.appendChild(tempForm);
+            tempForm.submit();
+
+            // Show success message immediately
+            setTimeout(function() {
+                showSuccess();
+                document.body.removeChild(tempForm);
+            }, 500);
+
+            return false;
         });
 
         function showSuccess() {
@@ -263,7 +310,6 @@
                 document.getElementById('customForm').reset();
                 document.getElementById('customForm').style.display = 'block';
                 document.getElementById('successMessage').style.display = 'none';
-                submitted = false;
             }, 3000);
         }
     </script>
