@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .form-content {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option:hover {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+
+        .radio-option label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Event Registration</h1>
+            <p>Please fill out the form below to register for our event</p>
+        </div>
+
+        <div class="form-content">
+            <div class="success-message" id="successMessage">
+                Thank you for your submission!
+            </div>
+
+            <form id="customForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdN3f0fb5AREOuKw0kvFb-Jf9vxa0YpqCYcEcyj0Jj6I8w06w/formResponse" method="POST" target="hidden_iframe">
+
+                <!-- RSVP Field -->
+                <div class="form-group">
+                    <label for="rsvp">Will you be attending? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="rsvp_yes" name="entry.877086558" value="Yes, I'll be there" required>
+                            <label for="rsvp_yes">Yes, I'll be there</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="rsvp_no" name="entry.877086558" value="No, I can't make it">
+                            <label for="rsvp_no">No, I can't make it</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="rsvp_maybe" name="entry.877086558" value="Maybe">
+                            <label for="rsvp_maybe">Maybe</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Name/Text Field -->
+                <div class="form-group">
+                    <label for="name">Your Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="entry.1498135098" placeholder="Enter your full name" required>
+                </div>
+
+                <!-- How did you hear about us -->
+                <div class="form-group">
+                    <label for="source">How did you hear about us? <span class="required">*</span></label>
+                    <select id="source" name="entry.1424661284" required>
+                        <option value="">Select an option</option>
+                        <option value="Website">Website</option>
+                        <option value="Social Media">Social Media</option>
+                        <option value="Friend">Friend</option>
+                        <option value="Email">Email</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Message/Comments Field -->
+                <div class="form-group">
+                    <label for="message">Additional Comments</label>
+                    <textarea id="message" name="entry.2606285" placeholder="Any special requirements or comments?"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Registration</button>
+            </form>
+        </div>
+    </div>
+
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { showSuccess(); }"></iframe>
+
+    <script>
+        let submitted = false;
+
+        document.getElementById('customForm').addEventListener('submit', function(e) {
+            submitted = true;
+        });
+
+        function showSuccess() {
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('customForm').style.display = 'none';
+
+            setTimeout(function() {
+                document.getElementById('customForm').reset();
+                document.getElementById('customForm').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+                submitted = false;
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
